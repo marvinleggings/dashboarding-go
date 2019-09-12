@@ -1,0 +1,64 @@
+<div id="pull"><span>Menu +</span></div>
+<ul id="menu">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">About Us</a></li>
+  <li><a href="#">Features</a></li>
+  <li><a href="#">Contact Us</a></li>
+</ul>
+
+<style>
+#menu {
+	height:50px;
+	background:#222;
+	width:100%;
+	background:#222;
+}
+#menu {
+	padding:0px;
+	list-style:none;
+	margin:0px auto;
+}
+#menu li {
+	float:left;
+}
+#menu li a {
+	display:block;
+	height:50px;
+	line-height:50px;
+	color:#fff;
+	text-decoration:none;
+	padding:0px 30px;
+	-webkit-transition-duration:.5s;
+}
+#menu li a:hover {
+	background:#444;
+}
+#pull {
+	display:none;
+	color:#fff;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	font-size:18px;
+	cursor:pointer;
+	background:#222;
+}
+@media screen and (max-width:768px) {
+#menu li a {
+	padding:0px 10px;
+}
+}
+@media screen and (max-width:480px) {
+#pull {
+	display:block!important;
+}
+#menu {
+	display:none;
+	height:auto;
+	background:#333;
+}
+#menu li {
+	float:none;
+}
+}
+</style>

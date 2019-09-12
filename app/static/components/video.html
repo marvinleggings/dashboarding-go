@@ -1,0 +1,39 @@
+<div class="player">
+    <div class="mediaplayer">
+        <video poster="http://corrupt-system.de/assets/media/sintel/sintel-trailer.jpg" controls="" preload="none">
+            <source src="http://corrupt-system.de/assets/media/sintel/sintel-trailer.m4v" type="video/mp4">
+            <source src="http://corrupt-system.de/assets/media/sintel/sintel-trailer.webm" type="video/webm">
+        </video>
+    </div>
+</div>
+
+<style>
+.player {
+    margin: auto;
+    padding: 10px;
+    width: 90%;
+    max-width: 900px;
+    min-width: 320px;
+}
+.mediaplayer {
+    position: relative;
+    height: 0;
+    width: 100%;
+    padding-bottom: 56.25%;
+    /* 16/9 */
+}
+.mediaplayer video, .mediaplayer .polyfill-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+</style>
+
+<script>
+webshims.setOptions('mediaelement', {
+    replaceUI: 'auto'
+});
+webshims.polyfill('mediaelement');
+</script>

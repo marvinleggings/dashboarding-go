@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.2/gridstack.min.css" rel="stylesheet" type="text/css">
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.0/lodash.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/attrchange/2.0.1/attrchange.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.all.js"></script>
+	<meta charset="UTF-8">
+    <title>WOO</title>
+  </head>
+  <body>
+ 	<button onclick='addWidget()'> Add Widget </button>
+ 	<button onclick='saveLayout()'> Save Layout </button>
+
+  		<div class="grid-stack"></div>
+  </body>
+    <script type="text/javascript">
+
+    //Define gridstack grid
+
+    $(function () {
+        var options = {
+            cellHeight: 80,
+            verticalMargin: 11,
+            height: 9,
+        };
+        $('.grid-stack').gridstack(options);
+    });
+
+    //Function to save grid via Ajax post
+
+    function saveLayout() {
+          var layout_data = [];
+
+          title = $('#Dashboard-Title').val()
+
+          //Read attributes + contents of widget into array
+
+          $('.grid-stack-item.ui-draggable').each(function () {
+              var $this = $(this);
+
+              layout_data.push({
+                  x: $this.attr('data-gs-x'),
+                  y: $this.attr('data-gs-y'),
+                  w: $this.attr('data-gs-width'),
+                  h: $this.attr('data-gs-height'),
+                  content: $('.widget-content', $this).html().replace(/"/g, "'").replace(/'/g, "\'")
+              });
+          });
+
+          console.log(layout_data);
+
+      $.ajax({
+        url: '/',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(layout_data),
+        dataType: "json",
+        success: function(data) {
+        // alert("success");
+        }
+        });
+      }
+      
+
+      // Function to add a graph/widget to the grid
+
+      function addWidget(){
+        $('.grid-stack').data('gridstack').addWidget($("<div><div class='panel panel--default grid-stack-item-content'><header class='panel__header' style='z-index:5;'><i class='fa fa-gears' style='cursor: pointer;'></i><i class='fa fa-edit btn-edit' style='cursor: pointer;'></i><div class = 'pull-right'><i class='fa fa-trash btn-delete' style='cursor: pointer;'></i></div></header><div class='widget-edit'  style='width: 90%; height: 80%; display: none; position: absolute; z-index: 10; opacity:80%'><button class='btn-apply'>Apply Changes</button><br><textarea class='content-editor' style='width: 90%; height: 80%; position: absolute; z-index: 10; opacity:80%'></textarea></div><div class='widget-content' style='height:100%; overflow: hidden;'><h1>content</h1></div></div>"), 0, 0, 2, 2);
+    }
+  </script>
+
+
+
+  <!-- Set up event handler to delete widgets -->
+  <script type="text/javascript"> 
+    $(function() {
+      var $eGridstack = $(".grid-stack");
+      $(document).on('click', '.btn-delete',function ()
+      {
+        let $widget = $(this).closest(".grid-stack-item");
+
+          if (confirm("Are you sure you wish to delete this widget?") == true)
+          { 
+              $eGridstack.data('gridstack').removeWidget($widget);
+          }
+      });
+
+      $(document).on('click', '.btn-edit',function ()
+      {
+      	let $parent = $(this).closest(".grid-stack-item");
+        let $content = $parent.find(".widget-content");
+        let $content_edit = $parent.find(".widget-edit");
+       	let $content_editor = $parent.find(".content-editor");
+
+        $content_editor.val($content.html());
+       	$content_edit.css('display','block');
+        console.log($content.html());
+      });
+
+      $(document).on('click', '.btn-apply',function ()
+      {
+      	let $parent = $(this).closest(".grid-stack-item");
+        let $content = $parent.find(".widget-content");
+        let $content_edit = $parent.find(".widget-edit");
+       	let $content_editor = $parent.find(".content-editor");
+
+       	$content.html($content_editor.val())
+       	$content_edit.css('display','none');
+      });
+    });
+  </script>
+</html>
+
+<!-- <style>
+    .zui-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
+</style>
+
+<table class="zui-table" style="width: 100%; height:85%;">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Height</th>
+            <th>Born</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>DeMarcus Cousins</td>
+            <td>C</td>
+            <td>6'11"</td>
+            <td>08-13-1990</td>
+            <td>$4,917,000</td>
+        </tr>
+        <tr>
+            <td>Isaiah Thomas</td>
+            <td>PG</td>
+            <td>5'9"</td>
+            <td>02-07-1989</td>
+            <td>$473,604</td>
+        </tr>
+        <tr>
+            <td>Ben McLemore</td>
+            <td>SG</td>
+            <td>6'5"</td>
+            <td>02-11-1993</td>
+            <td>$2,895,960</td>
+        </tr>
+        <tr>
+            <td>Marcus Thornton</td>
+            <td>SG</td>
+            <td>6'4"</td>
+            <td>05-05-1987</td>
+            <td>$7,000,000</td>
+        </tr>
+        <tr>
+            <td>Jason Thompson</td>
+            <td>PF</td>
+            <td>6'11"</td>
+            <td>06-21-1986</td>
+            <td>$3,001,000</td>
+        </tr>
+    </tbody>
+</table> -->
